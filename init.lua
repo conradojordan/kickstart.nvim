@@ -102,7 +102,7 @@ vim.g.have_nerd_font = true
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -121,6 +121,12 @@ end)
 -- Enable break indent
 vim.opt.breakindent = true
 
+-- Indent with 4 spaces
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+
 -- Save undo history
 vim.opt.undofile = true
 
@@ -135,6 +141,7 @@ vim.opt.signcolumn = 'yes'
 vim.opt.updatetime = 250
 
 -- Decrease mapped sequence wait time
+-- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
@@ -162,10 +169,6 @@ vim.opt.scrolloff = 10
 vim.opt.foldmethod = 'indent'
 vim.opt.foldenable = false
 vim.opt.foldlevel = 99
-
--- Set tab size
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
