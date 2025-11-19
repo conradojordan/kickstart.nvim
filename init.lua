@@ -213,6 +213,9 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 vim.keymap.set('n', '<leader>es', ':mksession! ~/.config/nvim/session/mysession.vim<CR>', { desc = 'S[e]ssion [s]ave' })
 vim.keymap.set('n', '<leader>el', ':source ~/.config/nvim/session/mysession.vim<CR>', { desc = 'S[e]ssion [l]oad' })
 
+-- Neotree keymaps
+vim.keymap.set('n', '<leader>F', ':Neotree reveal<CR>', { desc = '[F]iletree reveal (neotree)' })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -973,6 +976,29 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v3.x',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'MunifTanjim/nui.nvim',
+      'nvim-tree/nvim-web-devicons', -- optional, but recommended
+    },
+    lazy = false, -- neo-tree will lazily load itself
+    ---@module 'neo-tree'
+    ---@type neotree.Config
+    opts = {
+      -- options go here
+      filesystem = {
+        filtered_items = {
+          visible = true,
+        },
+      },
+      popup_border_style = 'NC',
+      enable_git_status = true,
+      enable_diagnostics = true,
+    },
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
