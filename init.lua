@@ -209,9 +209,49 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Get current git branch name
+local function get_git_branch()
+  local branch = vim.fn.system 'git branch --show-current'
+  if vim.v.shell_error == 0 then
+    return vim.trim(branch)
+  else
+    return 'mysession'
+  end
+end
+
+-- Save session with git branch name
+local function save_session_with_branch()
+  local branch_name = get_git_branch()
+  if branch_name then
+    local session_path = '~/.config/nvim/session/' .. branch_name .. '.vim'
+    vim.cmd('mksession! ' .. session_path)
+    print('Saved session: ' .. session_path)
+  else
+    print 'Not in a Git repository or unable to get branch name.'
+    vim.cmd 'mksession! ~/.config/nvim/session/mysession.vim' -- Fallback to default session saving
+  end
+end
+
+-- Load session with git branch name
+local function load_session_with_branch()
+  local branch_name = get_git_branch()
+  if branch_name then
+    local session_path = '~/.config/nvim/session/' .. branch_name .. '.vim'
+    vim.cmd('source ' .. session_path)
+    print('Loaded session: ' .. session_path)
+  else
+    print 'Not in a Git repository or unable to get branch name.'
+    vim.cmd 'source ~/.config/nvim/session/mysession.vim' -- Fallback to default session loading
+  end
+end
+
 -- Session keymaps
-vim.keymap.set('n', '<leader>es', ':mksession! ~/.config/nvim/session/mysession.vim<CR>', { desc = 'S[e]ssion [s]ave' })
-vim.keymap.set('n', '<leader>el', ':source ~/.config/nvim/session/mysession.vim<CR>', { desc = 'S[e]ssion [l]oad' })
+vim.keymap.set('n', '<leader>es', save_session_with_branch, { desc = 'S[e]ssion [s]ave' })
+vim.keymap.set('n', '<leader>el', load_session_with_branch, { desc = 'S[e]ssion [l]oad' })
+
+-- Session keymaps
+-- vim.keymap.set('n', '<leader>es', ':mksession! ~/.config/nvim/session/mysession.vim<CR>', { desc = 'S[e]ssion [s]ave' })
+-- vim.keymap.set('n', '<leader>el', ':source ~/.config/nvim/session/mysession.vim<CR>', { desc = 'S[e]ssion [l]oad' })
 
 -- Neotree keymaps
 vim.keymap.set('n', '<leader>F', ':Neotree reveal<CR>', { desc = '[F]iletree reveal (neotree)' })
