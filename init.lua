@@ -716,7 +716,7 @@ do
 
       -- Rename the variable under your cursor.
       --  Most Language Servers support renaming across files, etc.
-      map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+      map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 
       -- Execute a code action, usually your cursor needs to be on top of an error
       -- or a suggestion from your LSP for this to activate.
@@ -792,9 +792,7 @@ do
 
         if client.workspace_folders then
           local path = client.workspace_folders[1].name
-          if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then
-            return
-          end
+          if path ~= vim.fn.stdpath 'config' and (vim.uv.fs_stat(path .. '/.luarc.json') or vim.uv.fs_stat(path .. '/.luarc.jsonc')) then return end
         end
 
         local current_settings = client.config.settings --[[@as lspconfig.settings.lua_ls]]
@@ -881,9 +879,9 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
-      -- rust = { 'rustfmt' },
+      rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
-      -- python = { "isort", "black" },
+      python = { 'ruff' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
