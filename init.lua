@@ -417,6 +417,19 @@ do
       topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
       changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
     },
+    on_attach = function(bufnr)
+      local gs = package.loaded.gitsigns
+
+      -- Navigation between changes
+      vim.keymap.set('n', ']g', gs.next_hunk, { desc = 'Next [g]it change', buffer = bufnr })
+      vim.keymap.set('n', '[g', gs.prev_hunk, { desc = 'Previous [g]it change', buffer = bufnr })
+
+      -- See what changed on the current line/hunk
+      vim.keymap.set('n', '<leader>gc', gs.preview_hunk, { desc = 'Git [c]hanges', buffer = bufnr })
+
+      -- See full git blame details for the current line
+      vim.keymap.set('n', '<leader>gb', function() gs.blame_line { full = true } end, { desc = 'Git [b]lame', buffer = bufnr })
+    end,
   }
 
   -- Useful plugin to show you pending keybinds.
