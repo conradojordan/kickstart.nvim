@@ -295,8 +295,8 @@ do
   vim.keymap.set('n', '<leader>es', save_session_with_branch, { desc = 'S[e]ssion [s]ave' })
   vim.keymap.set('n', '<leader>el', load_session_with_branch, { desc = 'S[e]ssion [l]oad' })
 
-  -- Neotree keymaps
-  vim.keymap.set('n', '<leader>F', ':Neotree reveal<CR>', { desc = '[F]iletree reveal (neotree)' })
+  -- Netrw keymaps
+  vim.keymap.set('n', '<leader>F', ':Lex<CR>', { desc = '[F]iletree reveal (netrw)' })
 
   -- [[ Basic Autocommands ]]
   --  See `:help lua-guide-autocommands`
