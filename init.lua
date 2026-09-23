@@ -143,8 +143,8 @@ do
   -- Keep signcolumn on by default
   vim.o.signcolumn = 'yes'
 
-  -- Decrease update time
-  vim.o.updatetime = 250
+  -- Decrease update time (default 4000)
+  -- vim.o.updatetime = 250
 
   -- Decrease mapped sequence wait time
   vim.o.timeoutlen = 300
@@ -174,9 +174,8 @@ do
   vim.o.scrolloff = 10
 
   -- Folding options
-  -- Não sei o que essa comentada faz
-  -- vim.opt.fillchars = { fold = ' ' }
-  vim.opt.foldmethod = 'indent'
+  vim.opt.fillchars = { fold = ' ' } -- which character to use to fill fold line
+  vim.opt.foldmethod = 'indent' -- separate folds by indentation
   vim.opt.foldenable = false
   vim.opt.foldlevel = 99
 
@@ -224,14 +223,6 @@ do
 
   vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
-  -- ---------------------------------------- VER SE PRECISA DESCOMENTAR ISSO!
-  -- vim.keymap.set('n', '[d', function()
-  --   vim.diagnostic.jump { count = -1, float = true }
-  -- end, { desc = 'Go to previous diagnostic' })
-  -- vim.keymap.set('n', ']d', function()
-  --   vim.diagnostic.jump { count = 1, float = true }
-  -- end, { desc = 'Go to next diagnostic' })
-
   -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
   -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
   -- is not what someone will guess without a bit more experience.
@@ -259,7 +250,7 @@ do
   local function get_git_branch()
     local branch = vim.fn.system 'git branch --show-current'
     if vim.v.shell_error == 0 then
-      return vim.trim(branch)
+      return branch:gsub('\n', ''):gsub('/', '-')
     else
       return 'mysession'
     end
@@ -273,7 +264,8 @@ do
       vim.cmd('mksession! ' .. session_path)
       print('Saved session: ' .. session_path)
     else
-      print 'Not in a Git repository or unable to get branch name.'
+      local session_path = '~/.config/nvim/session/mysession.vim'
+      print('Not in a Git repository or unable to get branch name, saving as ' .. session_path)
       vim.cmd 'mksession! ~/.config/nvim/session/mysession.vim' -- Fallback to default session saving
     end
   end
@@ -286,7 +278,8 @@ do
       vim.cmd('source ' .. session_path)
       print('Loaded session: ' .. session_path)
     else
-      print 'Not in a Git repository or unable to get branch name.'
+      local session_path = '~/.config/nvim/session/mysession.vim'
+      print('Not in a Git repository or unable to get branch name, loading session ' .. session_path)
       vim.cmd 'source ~/.config/nvim/session/mysession.vim' -- Fallback to default session loading
     end
   end
@@ -349,7 +342,7 @@ do
   end
 
   -- This autocommand runs after a plugin is installed or updated and
-  --  runs the appropriate build command for that plugin if necessary.
+  -- runs the appropriate build command for that plugin if necessary.
   --
   -- See `:help vim.pack-events`
   vim.api.nvim_create_autocmd('PackChanged', {
@@ -482,21 +475,6 @@ do
     -- Used for backwards compatibility with plugins that require `nvim-web-devicons` (e.g. telescope.nvim)
     MiniIcons.mock_nvim_web_devicons()
   end
-
-  -- Better Around/Inside textobjects
-  --
-  -- Examples:
-  --  - va)  - [V]isually select [A]round [)]paren
-  --  - yiiq - [Y]ank [I]nside [I]+1 [Q]uote
-  --  - ci'  - [C]hange [I]nside [']quote
-  require('mini.ai').setup {
-    -- NOTE: Avoid conflicts with the built-in incremental selection mappings on Neovim>=0.12 (see `:help treesitter-incremental-selection`)
-    mappings = {
-      around_next = 'aa',
-      inside_next = 'ii',
-    },
-    n_lines = 500,
-  }
 
   -- Add/delete/replace surroundings (brackets, quotes, etc.)
   --
@@ -873,8 +851,10 @@ do
     },
     -- You can also specify external formatters in here.
     formatters_by_ft = {
-      rust = { 'rustfmt' },
+      lua = { 'stylua' },
+      -- rust = { 'rustfmt' },
       -- Conform can also run multiple formatters sequentially
+      -- python = { "isort", "black" },
       python = { 'ruff_format' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
@@ -944,7 +924,7 @@ do
     completion = {
       -- By default, you may press `<c-space>` to show the documentation.
       -- Optionally, set `auto_show = true` to show the documentation after a delay.
-      documentation = { auto_show = false, auto_show_delay_ms = 500 },
+      documentation = { auto_show = true, auto_show_delay_ms = 500 },
     },
 
     sources = {
@@ -986,17 +966,12 @@ do
     'bash',
     'c',
     'c_sharp',
-    'clojure',
-    'cmake',
-    'commonlisp',
     'cpp',
     'css',
     'csv',
-    'cuda',
     'diff',
     'dockerfile',
     'elixir',
-    'erlang',
     'git_config',
     'git_rebase',
     'gitattributes',
@@ -1005,50 +980,32 @@ do
     'go',
     'gomod',
     'gosum',
-    'graphql',
-    'haskell',
     'html',
     'http',
-    'java',
     'javadoc',
     'javascript',
-    'jinja',
-    'jinja_inline',
     'jq',
     'jsdoc',
     'json',
-    'julia',
-    'kotlin',
-    'latex',
-    'llvm',
     'lua',
     'luadoc',
     'make',
     'markdown',
     'markdown_inline',
-    'matlab',
     'nginx',
     'nix',
-    'ocaml',
-    'odin',
-    'perl',
-    'php',
-    'phpdoc',
-    'powershell',
     'proto',
     'python',
     'query',
     'r',
     'regex',
     'requirements',
-    'ruby',
     'rust',
     'scala',
     'scss',
     'sql',
     'ssh_config',
     'svelte',
-    'swift',
     'terraform',
     'toml',
     'typescript',
@@ -1057,7 +1014,6 @@ do
     'vimdoc',
     'xml',
     'yaml',
-    'zig',
     'zsh',
   }
   require('nvim-treesitter').install(parsers)
