@@ -256,32 +256,31 @@ do
     end
   end
 
-  -- Save session with git branch name
+  -- Get session file name
+  local function get_session_file_name()
+    local dir_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':t')
+    local git_branch_name = get_git_branch()
+    return dir_name .. '-' .. git_branch_name .. '.vim'
+  end
+
+  -- Save session with git branch name (falling back to 'mysession.vim' if git branch can't be retrieved)
   local function save_session_with_branch()
-    local branch_name = get_git_branch()
-    if branch_name then
-      local session_path = '~/.config/nvim/session/' .. branch_name .. '.vim'
-      vim.cmd('mksession! ' .. session_path)
-      print('Saved session: ' .. session_path)
-    else
-      local session_path = '~/.config/nvim/session/mysession.vim'
-      print('Not in a Git repository or unable to get branch name, saving as ' .. session_path)
-      vim.cmd 'mksession! ~/.config/nvim/session/mysession.vim' -- Fallback to default session saving
-    end
+    local session_file_name = get_session_file_name()
+    local session_dir = '~/.config/nvim/session/'
+    local session_path = session_dir .. session_file_name
+
+    vim.cmd('mksession! ' .. session_path)
+    print('Saved session: ' .. session_path)
   end
 
   -- Load session with git branch name
   local function load_session_with_branch()
-    local branch_name = get_git_branch()
-    if branch_name then
-      local session_path = '~/.config/nvim/session/' .. branch_name .. '.vim'
-      vim.cmd('source ' .. session_path)
-      print('Loaded session: ' .. session_path)
-    else
-      local session_path = '~/.config/nvim/session/mysession.vim'
-      print('Not in a Git repository or unable to get branch name, loading session ' .. session_path)
-      vim.cmd 'source ~/.config/nvim/session/mysession.vim' -- Fallback to default session loading
-    end
+    local session_file_name = get_session_file_name()
+    local session_dir = '~/.config/nvim/session/'
+    local session_path = session_dir .. session_file_name
+
+    vim.cmd('source ' .. session_path)
+    print('Loaded session: ' .. session_path)
   end
 
   -- Session keymaps
