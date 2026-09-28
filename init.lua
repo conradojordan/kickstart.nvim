@@ -573,7 +573,7 @@ do
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
   vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
   vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-  vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[S]earch files modified by git' })
+  vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]earch modified files' })
 
   -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
   -- If you later switch picker plugins, this is where to update these mappings.
@@ -583,7 +583,7 @@ do
       local buf = event.buf
 
       -- Find references for the word under your cursor.
-      vim.keymap.set('n', 'glr', builtin.lsp_references, { buffer = buf, desc = 'LSP: [G]oto [R]eferences' })
+      vim.keymap.set('n', 'gr', builtin.lsp_references, { buffer = buf, desc = 'LSP: [G]oto [R]eferences' })
 
       -- Jump to the implementation of the word under your cursor.
       -- Useful when your language has ways of declaring types without an actual implementation.
@@ -592,7 +592,7 @@ do
       -- Jump to the definition of the word under your cursor.
       -- This is where a variable was first declared, or where a function is defined, etc.
       -- To jump back, press <C-t>.
-      vim.keymap.set('n', 'gld', builtin.lsp_definitions, { buffer = buf, desc = 'LSP: [G]oto [D]efinition' })
+      vim.keymap.set('n', 'gd', builtin.lsp_definitions, { buffer = buf, desc = 'LSP: [G]oto [D]efinition' })
 
       -- Fuzzy find all the symbols in your current document.
       -- Symbols are things like variables, functions, types, etc.
@@ -605,7 +605,7 @@ do
       -- Jump to the type of the word under your cursor.
       -- Useful when you're not sure what type a variable is and you want to see
       -- the definition of its *type*, not where it was *defined*.
-      vim.keymap.set('n', 'glt', builtin.lsp_type_definitions, { buffer = buf, desc = 'LSP: [G]oto [T]ype Definition' })
+      vim.keymap.set('n', 'glt', builtin.lsp_type_definitions, { buffer = buf, desc = '[G]oto [L]SP [T]ype Definition' })
     end,
   })
 
